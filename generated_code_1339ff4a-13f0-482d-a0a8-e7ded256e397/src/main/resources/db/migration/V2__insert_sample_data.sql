@@ -1,0 +1,75 @@
+-- Insert sample accounts
+-- Starting with initial deposits, then subtracting transactions to arrive at current balance
+INSERT INTO accounts (account_id, current_balance, created_at, updated_at) VALUES
+('00000000001', 4788.75, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),  -- Started with 5000, spent 211.25
+('00000000002', 2204.50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),  -- Started with 2500, spent 295.50
+('00000000003', 2480.75, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),  -- Started with 3250, spent 769.25
+('00000000004', 8659.25, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),  -- Started with 9000, spent 340.75
+('00000000005', 14084.02, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); -- Started with 15000, spent 915.98
+
+-- Insert sample card cross references
+-- Account 1 has 2 cards, others have 1 card each
+INSERT INTO card_cross_reference (account_id, card_number, created_at, updated_at) VALUES
+('00000000001', '4111111111111111', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('00000000001', '4222222222222222', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('00000000002', '4333333333333333', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('00000000003', '4444444444444444', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('00000000004', '4555555555555555', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('00000000005', '4666666666666666', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Insert sample transactions
+-- All transactions are debits (reducing account balance)
+INSERT INTO transactions (
+    transaction_id, transaction_type_code, transaction_category_code, 
+    transaction_source, transaction_description, transaction_amount, 
+    card_number, merchant_id, merchant_name, merchant_city, merchant_zip,
+    origin_timestamp, process_timestamp, account_id, created_at, updated_at
+) VALUES
+-- Account 00000000001 transactions (2 cards, total spent: 211.25)
+('TX0000000000001', '01', 5411, 'POS', 'Grocery Store Purchase', 125.50, 
+ '4111111111111111', 1001, 'SuperMart', 'New York', '10001',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ 
+('TX0000000000002', '01', 5812, 'ONLINE', 'Restaurant Dining', 85.75, 
+ '4222222222222222', 1002, 'Italian Bistro', 'New York', '10002',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+-- Account 00000000002 transactions (1 card, total spent: 295.50)
+('TX0000000000003', '01', 5541, 'POS', 'Gas Station', 45.00, 
+ '4333333333333333', 1003, 'QuickFuel', 'Los Angeles', '90001',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000002', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+('TX0000000000004', '01', 5999, 'ONLINE', 'Online Shopping', 250.50, 
+ '4333333333333333', 1004, 'ShopNow', 'Seattle', '98101',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000002', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+-- Account 00000000003 transactions (1 card, total spent: 769.25)
+('TX0000000000005', '01', 4511, 'POS', 'Airline Ticket', 450.00, 
+ '4444444444444444', 1005, 'SkyHigh Airlines', 'Chicago', '60601',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000003', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+('TX0000000000006', '01', 7011, 'POS', 'Hotel Stay', 319.25, 
+ '4444444444444444', 1006, 'Grand Hotel', 'Miami', '33101',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000003', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+-- Account 00000000004 transactions (1 card, total spent: 340.75)
+('TX0000000000007', '01', 5311, 'POS', 'Department Store', 175.25, 
+ '4555555555555555', 1007, 'Fashion Plaza', 'Houston', '77001',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+('TX0000000000008', '01', 5912, 'POS', 'Pharmacy', 65.50, 
+ '4555555555555555', 1008, 'HealthPlus Pharmacy', 'Houston', '77002',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+('TX0000000000009', '01', 5942, 'POS', 'Bookstore', 100.00, 
+ '4555555555555555', 1009, 'Books & More', 'Houston', '77003',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+-- Account 00000000005 transactions (1 card, total spent: 915.98)
+('TX0000000000010', '01', 5732, 'ONLINE', 'Electronics Store', 899.99, 
+ '4666666666666666', 1010, 'TechWorld', 'San Francisco', '94101',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000005', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+('TX0000000000011', '01', 5816, 'ONLINE', 'Streaming Service', 15.99, 
+ '4666666666666666', 1011, 'StreamFlix', 'Los Angeles', '90210',
+ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '00000000005', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

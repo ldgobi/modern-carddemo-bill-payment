@@ -3,18 +3,19 @@ CREATE TABLE accounts (
     account_id VARCHAR(11) NOT NULL PRIMARY KEY,
     current_balance DECIMAL(19, 2) NOT NULL DEFAULT 0.00,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create card_cross_reference table
 CREATE TABLE card_cross_reference (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    account_id VARCHAR(11) NOT NULL UNIQUE,
-    card_number VARCHAR(16) NOT NULL,
+    account_id VARCHAR(11) NOT NULL,
+    card_number VARCHAR(16) NOT NULL UNIQUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_account_id (account_id)
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX idx_card_xref_account_id ON card_cross_reference(account_id);
 
 -- Create transactions table
 CREATE TABLE transactions (
@@ -33,9 +34,10 @@ CREATE TABLE transactions (
     process_timestamp TIMESTAMP NOT NULL,
     account_id VARCHAR(11) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_account_id (account_id)
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX idx_transactions_account_id ON transactions(account_id);
 
 -- Add foreign key constraints
 ALTER TABLE card_cross_reference
